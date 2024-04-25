@@ -38,13 +38,13 @@ fn main() -> Result<(), eframe::Error> {
                 ..Style::default()
             };
             cc.egui_ctx.set_style(style);
-            Box::new(MyApp::default())
+            Box::new(Editor{center_text: true, ..Editor::default()})
         }),
     )
 }
 
 #[derive(Default)]
-struct MyApp {
+struct Editor {
     dropped_file: Option<egui::DroppedFile>,
     selected_level: u8,
 
@@ -53,7 +53,7 @@ struct MyApp {
     center_text: bool,
 }
 
-impl MyApp {
+impl Editor {
     fn create_ui(&mut self, ctx: &Context) {
         self.side_panel(ctx);
         self.bottom_panel(ctx);
@@ -247,7 +247,7 @@ impl MyApp {
     }
 }
 
-impl eframe::App for MyApp {
+impl eframe::App for Editor {
     fn update(&mut self, ctx: &Context, _frame: &mut eframe::Frame) {
         self.create_ui(ctx);
 
