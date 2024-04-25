@@ -188,7 +188,9 @@ impl Editor {
                         "I think this is a \"variation / mode\" control of sorts.\n",
                         "For example, this can be used to change grunts to purple.",
                     ));
-                    ui.label("Cooldown timer");
+                    ui.label("Cooldown timer")
+                    .on_hover_cursor(egui::CursorIcon::Help)
+                    .on_hover_text("Setting this 0 essentially stops further spawns.");
                     ui.label("Pre-spawned");
                     ui.label("Spawn timer");
                     ui.end_row();
@@ -226,7 +228,7 @@ impl Editor {
                             count: 1,
                             spawn_limit: 1,
                             unknown: 0,
-                            cooldown_timer: 0,
+                            cooldown_timer: 1,
                             pre_spawned: 0,
                             spawn_timer: 0,
                         });
