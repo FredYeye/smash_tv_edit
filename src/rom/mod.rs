@@ -148,8 +148,8 @@ impl Rom {
         let offset = Self::from_snes_address(0x108000);
         self.rom[offset .. offset + circuit_arena_offsets_u8.len()].clone_from_slice(&circuit_arena_offsets_u8);
 
+        // save connections
         for level in level_data {
-            // save connections
             let circuit_connection_list_address = Self::from_snes_address(0x00AA66 + level.circuit as u32);
             let circuit_connection_list = Self::from_snes_address(u32::from_le_bytes([
                 self.rom[circuit_connection_list_address],
@@ -161,6 +161,12 @@ impl Rom {
             for (idx, &con) in level.connections.iter().enumerate() {
                 self.rom[circuit_connection_list + level.arena as usize * 3 + idx] = con;
             }
+        }
+
+        // save arena names
+        for (idx, level) in level_data.iter().enumerate() {
+            let base = Self::from_snes_address(0x00E977 + 3 * 2);
+            self.rom[base + idx * 26 .. base + idx * 26 + 26].copy_from_slice(level.name.as_bytes());
         }
 
         std::fs::write("Smash TV edit.sfc", &self.rom).expect("Couldn't save new rom");
